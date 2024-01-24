@@ -48,10 +48,12 @@ Location: http://google.com
 
 Request:
 ```
-GET /stats?short_code=a7F15gaw HTTP/1.1
+GET /stats?short_code=a7F15gaw
 ```
 Response:
+
 ```
+HTTP/1.1
 Host: localhost:8000
 Response:
 HTTP/1.1 200 OK
