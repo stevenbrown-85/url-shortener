@@ -2,11 +2,11 @@
 
 The brief is to build a very simple url shortening service, similar to something like bit.ly or goo.gl.
 
-The purpose of this assessment is to see how you approach a problem, and to assess your technical ability in object oriented php as well as the http protocol. Your code should be clean and easy to understand.
+The purpose of this assessment is to see how you approach a problem, and to assess your technical ability in object oriented php as well as your understanding of the http protocol. 
 
-Your solution should be built using PHP with an appropriate database backend.
+Your solution should be built using PHP with a MySQL database.
 
-You may use php packages via composer, however we have provided a scaffold package which you can use as well.
+You may use php packages via composer, however we have provided a scaffold package which you can use if you wish.
 
 The scaffold package uses [Nette Database](https://doc.nette.org/en/database) for database abstraction, and [Symfony HTTP Foundation](https://symfony.com/doc/current/components/http_foundation.html) to manage requests and responses in a nice object-oriented way.
 
