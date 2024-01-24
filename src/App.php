@@ -46,7 +46,7 @@ class App
                 // Get stats about a given url and return a response...
 
             default:
-                // Fetch a short url, update the hit counter, and return appropriate response (e.g. a Redirect)
+                // Fetch a short url, update the hit counter, and return appropriate response (e.g. a Redirect or 404 Not Found)
         }
 
         return $this->response(content: 'Default message...');
