@@ -66,7 +66,7 @@ Last accessed: 2024-01-24 12:51:02
 
 These steps are only applicable if you choose to use the provided scaffold application.
 
-1. Copy the .env.example file `cp .env.example > .env`
+1. Copy the .env.example file `cp .env.example .env`
 2. Install composer dependencies
 3. Build docker (see below)
 4. Run the db seeder, if using docker: `docker exec php-app php migrate.php`
