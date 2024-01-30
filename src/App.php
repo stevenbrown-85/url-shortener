@@ -76,7 +76,7 @@ class App{
                                 'short_code' => $short_url,
                             ]);
 
-                            return $this->response("URL has been shortened to: <a href='http://" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "'>" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "</a>");
+                            return $this->response("URL has been shortened to: <a href='http://" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "'>" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "</a>", 200);
                         } else { 
                             return $this->response("There was a problem finding this URL...."); 
                         } 
@@ -85,7 +85,7 @@ class App{
                     } 
                 
                 }else{
-                    return $this->response("Are you using the correct params?"); 
+                    return $this->response("Are you using the correct params?", 418); 
                 }
 
             case "stats":
@@ -96,13 +96,13 @@ class App{
                     $code_exists = $this->db->fetchAll('SELECT * FROM urls WHERE short_code = ?', $stat_code);
 
                     if($code_exists){
-                        return $this->response("Stats for short code: $stat_code <br/> Last Accessed: " . $code_exists[0]['last_accessed'] . "<br/> Hits: " . $code_exists[0]['hits']); 
+                        return $this->response("Stats for short code: $stat_code <br/> Last Accessed: " . $code_exists[0]['last_accessed'] . "<br/> Hits: " . $code_exists[0]['hits'], 200); 
                     }else{
                         return $this->response("Cannot find shortcode, please try again"); 
                     }
 
                 }else{  
-                    return $this->response("Are you using the correct params?"); 
+                    return $this->response("Are you using the correct params?", 418); 
                 }
 
             default:
@@ -124,9 +124,9 @@ class App{
                         ], 'WHERE short_code = ?', $requested_short); 
 
                         if(strpos($url_exists[0]['url'], 'https://') !== false || strpos($url_exists[0]['url'], 'http://') !== false){
-                            $response = new RedirectResponse($url_exists[0]['url']);
+                            $response = new RedirectResponse($url_exists[0]['url'], 302);
                         }else{
-                            $response = new RedirectResponse('https://' . $url_exists[0]['url']);
+                            $response = new RedirectResponse('https://' . $url_exists[0]['url'], 302);
                         }
 
                         return $this->response($response);
