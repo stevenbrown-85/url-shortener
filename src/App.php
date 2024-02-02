@@ -38,7 +38,7 @@ class App{
         $result = $short_exists->getRowCount();
         if($result > 0){
             //if exists re-run
-            simpleShortcode();
+            $this->simpleShortcode();
         } else{
             return $short;
         }
@@ -76,16 +76,17 @@ class App{
                                 'short_code' => $short_url,
                             ]);
 
-                            return $this->response("URL has been shortened to: <a href='http://" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "'>" . $_SERVER['HTTP_HOST'] . "/" . $short_url . "</a>", 200);
+                            return $this->response($_SERVER['HTTP_HOST'] . "/" . $short_url, 200, 'text/plain');
+
                         } else { 
-                            return $this->response("There was a problem finding this URL...."); 
+                            return $this->response("Not Found", 404, 'text/plain'); 
                         } 
                     } else { 
-                        return $this->response("There was a problem finding this URL...."); 
+                        return $this->response("Not Found", 404, 'text/plain'); 
                     } 
                 
                 }else{
-                    return $this->response("Are you using the correct params?", 418); 
+                    return $this->response("Are you using the correct params?", 418, 'text/plain'); 
                 }
 
             case "stats":
@@ -96,13 +97,13 @@ class App{
                     $code_exists = $this->db->fetchAll('SELECT * FROM urls WHERE short_code = ?', $stat_code);
 
                     if($code_exists){
-                        return $this->response("Stats for short code: $stat_code <br/> Last Accessed: " . $code_exists[0]['last_accessed'] . "<br/> Hits: " . $code_exists[0]['hits'], 200); 
+                        return $this->response("Last Accessed: " . $code_exists[0]['last_accessed'] . "\nHits: " . $code_exists[0]['hits'], 200, 'text/plain'); 
                     }else{
-                        return $this->response("Cannot find shortcode, please try again"); 
+                        return $this->response("Cannot find shortcode, please try again", 200, 'text/plain'); 
                     }
 
                 }else{  
-                    return $this->response("Are you using the correct params?", 418); 
+                    return $this->response("Are you using the correct params?", 418, 'text/plain'); 
                 }
 
             default:
@@ -115,7 +116,7 @@ class App{
                     //check if short exists
                     $url_exists = $this->db->fetchAll('SELECT * FROM urls WHERE short_code = ?', $requested_short);
 
-                    //if exists update last accessed and hit then redirect
+                    //if exists update last accessed and hit
                     if($url_exists){
                         
                         $this->db->query('UPDATE urls SET', [
@@ -124,17 +125,13 @@ class App{
                         ], 'WHERE short_code = ?', $requested_short); 
 
                         if(strpos($url_exists[0]['url'], 'https://') !== false || strpos($url_exists[0]['url'], 'http://') !== false){
-                            $response = new RedirectResponse($url_exists[0]['url'], 302);
+                            return $this->response($url_exists[0]['url'], 302, 'text/plain');
                         }else{
-                            $response = new RedirectResponse('https://' . $url_exists[0]['url'], 302);
+                            return $this->response('https://' . $url_exists[0]['url'], 302, 'text/plain');
                         }
 
-                        return $this->response($response);
-
                     } else{
-                        header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
-                        include("404.php");
-                        die();
+                        return $this->response("Not Found", 404, 'text/plain');
                     }
 
                 }
